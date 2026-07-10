@@ -1,0 +1,34 @@
+PANDUAN SINGKAT USER BARU
+=========================
+
+Aplikasi ini adalah Rembg-Fuse, web app untuk edit gambar dan hapus background.
+
+CARA PALING MUDAH MENJALANKAN
+1. Pastikan komputer sudah install Python 3.8 atau lebih baru.
+   Download Python: https://www.python.org/downloads/
+   Saat install Python, centang "Add Python to PATH".
+
+2. Klik dua kali file:
+   MULAI_DI_SINI.bat
+
+3. Tunggu proses setup selesai.
+   Saat pertama kali dijalankan, aplikasi akan:
+   - Membuat virtual environment di folder project
+   - Install library Python yang dibutuhkan
+   - Menjalankan web app
+
+4. Browser akan terbuka otomatis ke:
+   http://127.0.0.1:5000
+
+Kalau browser tidak terbuka otomatis, buka Chrome/Edge lalu ketik alamat di atas.
+
+CARA MENGHENTIKAN APLIKASI
+Tekan CTRL + C di jendela hitam/Command Prompt yang sedang berjalan.
+
+CATATAN PENTING
+- Setup pertama kali butuh internet untuk download library Python.
+- Proses pertama bisa agak lama.
+- Aplikasi memakai virtual environment / venv di dalam folder project.
+- Kalau muncul error Python tidak ditemukan, install Python dulu dan jalankan lagi.
+- Untuk panduan lengkap, buka:
+  Proyek UTS 1 - Copy\README.md

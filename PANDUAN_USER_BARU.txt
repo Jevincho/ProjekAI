@@ -31,4 +31,4 @@ CATATAN PENTING
 - Aplikasi memakai virtual environment / venv di dalam folder project.
 - Kalau muncul error Python tidak ditemukan, install Python dulu dan jalankan lagi.
 - Untuk panduan lengkap, buka:
-  Proyek UTS 1 - Copy\README.md
+  ProyekAI\README.md

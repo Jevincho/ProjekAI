@@ -1,0 +1,36 @@
+# Complete Requirements for Rembg-Fuse Project
+# Production-ready, all components
+
+# Core Web Framework
+Flask==3.0.0
+Werkzeug==3.0.0
+
+# Image Processing
+Pillow>=10.0.0
+numpy>=1.24.0
+
+# Background Removal (choose one)
+# For CPU only:
+# rembg>=0.3.0
+
+# For GPU (NVIDIA):
+rembg[gpu]>=0.3.0
+
+# For GPU (AMD):
+# rembg[rocm]>=0.3.0
+
+# Production Server
+gunicorn==21.2.0
+
+# Configuration
+python-dotenv>=1.0.0
+
+# Optional: For advanced features
+Cachetools>=5.3.0
+python-magic>=0.4.27
+
+# Development (optional, for testing)
+# pytest>=7.4.0
+# pytest-cov>=4.1.0
+# black>=23.0.0
+# flake8>=6.0.0

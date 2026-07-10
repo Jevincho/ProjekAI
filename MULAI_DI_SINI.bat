@@ -1,7 +1,7 @@
 @echo off
 setlocal
 
-set "INNER_SCRIPT=%~dp0Proyek UTS 1 - Copy\SETUP_DAN_JALANKAN_WEB.bat"
+set "INNER_SCRIPT=%~dp0ProyekAI\SETUP_DAN_JALANKAN_WEB.bat"
 
 if not exist "%INNER_SCRIPT%" (
     echo ERROR: File launcher utama tidak ditemukan:

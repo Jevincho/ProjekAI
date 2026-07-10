@@ -1,0 +1,676 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rembg-Fuse: Background Removal & Color Setting</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar">
+      <div class="navbar-container">
+        <div class="logo">
+          <h1>🎨 Rembg-Fuse</h1>
+          <span class="tagline"
+            >Background Removal & Color Setter + Editor</span
+          >
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main App Section -->
+    <section id="app" class="app-section">
+      <div class="container">
+        <h2>Ubah & Edit Gambar Anda</h2>
+        <p>
+          Hapus background, ubah warna, dan edit gambar dengan berbagai filter
+        </p>
+
+        <!-- Tabs -->
+        <div class="tabs-container">
+          <div class="tabs">
+            <button
+              class="tab-btn active"
+              data-tab="editor"
+              onclick="switchTab('editor')"
+            >
+              🎨 Editor Lengkap
+            </button>
+            <button
+              class="tab-btn"
+              data-tab="remove"
+              onclick="switchTab('remove')"
+            >
+              🗑️ Hapus Background
+            </button>
+            <button
+              class="tab-btn"
+              data-tab="color"
+              onclick="switchTab('color')"
+            >
+              🎯 Set Warna
+            </button>
+          </div>
+
+          <!-- EDITOR TAB (NEW) -->
+          <div id="editor" class="tab-content active">
+            <div class="editor-layout">
+              <!-- Upload Area -->
+              <div class="editor-upload">
+                <div class="upload-area" id="upload-area-editor">
+                  <div class="upload-icon">📸</div>
+                  <h4>Upload Gambar</h4>
+                  <p>Drag & Drop atau Klik</p>
+                  <input
+                    type="file"
+                    id="file-input-editor"
+                    class="file-input"
+                    accept="image/*"
+                  />
+                </div>
+              </div>
+
+              <!-- Preview + Controls -->
+              <div class="editor-main">
+                <!-- Preview Panel -->
+                <div class="editor-preview-panel">
+                  <div class="preview-header">
+                    <h3>👁️ Preview</h3>
+                    <span id="preview-size" class="preview-size">Original</span>
+                  </div>
+                  <img
+                    id="editor-preview"
+                    src=""
+                    alt="Preview"
+                    class="editor-preview-img"
+                    style="display: none"
+                  />
+                  <div id="no-image-msg" class="no-image-msg">
+                    Belum ada gambar. Upload terlebih dahulu
+                  </div>
+                </div>
+
+                <!-- Controls Panel -->
+                <div class="editor-controls">
+                  <h3>🎮 Kontrol Edit</h3>
+
+                  <!-- Basic Controls -->
+                  <div class="control-section">
+                    <h4>Rotasi & Flip</h4>
+                    <div class="button-group">
+                      <button
+                        class="btn btn-sm"
+                        onclick="editorRotate(90)"
+                        title="Putar 90°"
+                      >
+                        ↻ 90°
+                      </button>
+                      <button
+                        class="btn btn-sm"
+                        onclick="editorRotate(-90)"
+                        title="Putar -90°"
+                      >
+                        ↺ -90°
+                      </button>
+                      <button
+                        class="btn btn-sm"
+                        onclick="editorFlip('horizontal')"
+                        title="Flip Horizontal"
+                      >
+                        ↔️ Flip H
+                      </button>
+                      <button
+                        class="btn btn-sm"
+                        onclick="editorFlip('vertical')"
+                        title="Flip Vertical"
+                      >
+                        ↕️ Flip V
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Brightness Control -->
+                  <div class="control-section">
+                    <label>☀️ Brightness</label>
+                    <div class="slider-group">
+                      <input
+                        type="range"
+                        id="brightness-slider"
+                        class="slider"
+                        min="0.5"
+                        max="2"
+                        step="0.1"
+                        value="1"
+                        oninput="editorBrightness(this.value)"
+                      />
+                      <span id="brightness-value" class="slider-value"
+                        >1.0</span
+                      >
+                    </div>
+                  </div>
+
+                  <!-- Contrast Control -->
+                  <div class="control-section">
+                    <label>📊 Contrast</label>
+                    <div class="slider-group">
+                      <input
+                        type="range"
+                        id="contrast-slider"
+                        class="slider"
+                        min="0.5"
+                        max="2"
+                        step="0.1"
+                        value="1"
+                        oninput="editorContrast(this.value)"
+                      />
+                      <span id="contrast-value" class="slider-value">1.0</span>
+                    </div>
+                  </div>
+
+                  <!-- Saturation Control -->
+                  <div class="control-section">
+                    <label>🌈 Saturation</label>
+                    <div class="slider-group">
+                      <input
+                        type="range"
+                        id="saturation-slider"
+                        class="slider"
+                        min="0"
+                        max="2"
+                        step="0.1"
+                        value="1"
+                        oninput="editorSaturation(this.value)"
+                      />
+                      <span id="saturation-value" class="slider-value"
+                        >1.0</span
+                      >
+                    </div>
+                  </div>
+
+                  <!-- Blur Control -->
+                  <div class="control-section">
+                    <label>💨 Blur</label>
+                    <div class="slider-group">
+                      <input
+                        type="range"
+                        id="blur-slider"
+                        class="slider"
+                        min="0"
+                        max="15"
+                        step="1"
+                        value="0"
+                        oninput="editorBlur(this.value)"
+                      />
+                      <span id="blur-value" class="slider-value">0</span>
+                    </div>
+                  </div>
+
+                  <!-- Resize Control -->
+                  <div class="control-section">
+                    <label>📏 Resize</label>
+                    <div class="resize-inputs">
+                      <input
+                        type="number"
+                        id="resize-width"
+                        placeholder="Width"
+                        min="100"
+                        max="4000"
+                        value="800"
+                      />
+                      <input
+                        type="number"
+                        id="resize-height"
+                        placeholder="Height"
+                        min="100"
+                        max="4000"
+                        value="600"
+                      />
+                      <button class="btn btn-sm" onclick="editorResize()">
+                        Apply
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Effects -->
+                  <div class="control-section">
+                    <h4>✨ Efek</h4>
+                    <div class="button-group">
+                      <button
+                        class="btn btn-sm"
+                        onclick="editorGrayscale()"
+                        title="Grayscale"
+                      >
+                        🖤 Gray
+                      </button>
+                      <button
+                        class="btn btn-sm"
+                        onclick="editorSharpen()"
+                        title="Sharpen"
+                      >
+                        🔱 Sharp
+                      </button>
+                      <button
+                        class="btn btn-sm"
+                        onclick="editorEdgeDetect()"
+                        title="Edge Detection"
+                      >
+                        🔲 Edge
+                      </button>
+                      <button
+                        class="btn btn-sm"
+                        onclick="editorInvert()"
+                        title="Invert Colors"
+                      >
+                        ⚫ Invert
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Reset -->
+                  <div class="control-section">
+                    <button
+                      class="btn btn-warning w-100"
+                      onclick="editorReset()"
+                    >
+                      🔄 Reset Semua
+                    </button>
+                  </div>
+
+                  <!-- Download -->
+                  <div class="control-section">
+                    <button
+                      class="btn btn-success w-100"
+                      id="editor-download-btn"
+                      onclick="editorDownload()"
+                      disabled
+                    >
+                      ⬇️ Download
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Progress & Error -->
+            <div id="editor-progress" class="progress-container hidden">
+              <div class="progress-bar">
+                <div class="progress-fill"></div>
+              </div>
+              <p class="progress-text">Memproses... Harap tunggu</p>
+            </div>
+            <div id="editor-error" class="alert alert-error hidden"></div>
+          </div>
+
+          <!-- Remove Background Tab -->
+          <div id="remove" class="tab-content active">
+            <div class="tab-inner">
+              <h3>Hapus Background dari Gambar</h3>
+              <p>
+                Gunakan teknologi AI untuk menghilangkan background secara
+                sempurna
+              </p>
+
+              <!-- Model Selection -->
+              <div class="form-group">
+                <label for="model-select">Pilih Model AI:</label>
+                <select id="model-select" class="form-control">
+                  <option value="u2netp">U2Net-P (Cepat, Lightweight)</option>
+                  <option value="u2net">U2Net (Standar, Akurat)</option>
+                  <option value="isnet-general-use">
+                    ISNet (Kualitas Tinggi)
+                  </option>
+                  <option value="silueta">Silueta (Ringan)</option>
+                </select>
+              </div>
+
+              <!-- Upload Area -->
+              <div class="upload-area" id="upload-area-remove">
+                <div class="upload-icon">📸</div>
+                <h4>Drag & Drop atau Klik untuk Upload</h4>
+                <p>Format: JPG, PNG, GIF, BMP (Max 50MB)</p>
+                <input
+                  type="file"
+                  id="file-input-remove"
+                  class="file-input"
+                  accept="image/*"
+                />
+              </div>
+
+              <!-- Progress Bar -->
+              <div id="remove-progress" class="progress-container hidden">
+                <div class="progress-bar">
+                  <div class="progress-fill"></div>
+                </div>
+                <p class="progress-text">Memproses... Harap tunggu</p>
+              </div>
+
+              <!-- Result -->
+              <div id="remove-result" class="result-area hidden">
+                <h4>Hasil Pemrosesan:</h4>
+                <div class="result-display">
+                  <div class="result-preview">
+                    <img id="remove-preview" src="" alt="Result" />
+                  </div>
+                </div>
+                <div class="result-actions">
+                  <button
+                    class="btn btn-success"
+                    id="download-remove-btn"
+                    onclick="downloadRemove()"
+                  >
+                    ⬇️ Download Gambar
+                  </button>
+                  <button class="btn btn-secondary" onclick="resetRemove()">
+                    Proses Gambar Lain
+                  </button>
+                </div>
+              </div>
+
+              <!-- Error Message -->
+              <div id="remove-error" class="alert alert-error hidden"></div>
+            </div>
+          </div>
+
+          <!-- Color Background Tab -->
+          <div id="color" class="tab-content">
+            <div class="tab-inner">
+              <h3>Ubah Warna Background</h3>
+              <p>
+                Aplikasikan warna background pilihan Anda ke gambar transparan
+              </p>
+
+              <!-- Upload Area for Color -->
+              <div class="form-row">
+                <div class="form-group" style="flex: 1">
+                  <label>Upload Gambar (dengan background transparan):</label>
+                  <div class="upload-area" id="upload-area-color">
+                    <div class="upload-icon">📸</div>
+                    <p>Drag & Drop atau Klik</p>
+                    <input
+                      type="file"
+                      id="file-input-color"
+                      class="file-input"
+                      accept="image/*"
+                    />
+                  </div>
+                </div>
+
+                <div class="form-group" style="flex: 0.5">
+                  <label for="color-picker">Pilih Warna:</label>
+                  <div class="color-picker-container">
+                    <input
+                      type="color"
+                      id="color-picker"
+                      class="color-picker-input"
+                      value="#ffffff"
+                    />
+                    <div
+                      id="color-display"
+                      class="color-display"
+                      style="background-color: #ffffff"
+                    ></div>
+                  </div>
+                  <div class="color-presets">
+                    <button
+                      class="preset-color"
+                      style="background-color: #ffffff"
+                      onclick="setColor('#ffffff')"
+                      title="Putih"
+                    ></button>
+                    <button
+                      class="preset-color"
+                      style="background-color: #000000"
+                      onclick="setColor('#000000')"
+                      title="Hitam"
+                    ></button>
+                    <button
+                      class="preset-color"
+                      style="background-color: #ff0000"
+                      onclick="setColor('#ff0000')"
+                      title="Merah"
+                    ></button>
+                    <button
+                      class="preset-color"
+                      style="background-color: #00ff00"
+                      onclick="setColor('#00ff00')"
+                      title="Hijau"
+                    ></button>
+                    <button
+                      class="preset-color"
+                      style="background-color: #0000ff"
+                      onclick="setColor('#0000ff')"
+                      title="Biru"
+                    ></button>
+                    <button
+                      class="preset-color"
+                      style="background-color: #ffff00"
+                      onclick="setColor('#ffff00')"
+                      title="Kuning"
+                    ></button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- RGB Display -->
+              <div class="rgb-info">
+                <span>RGB: <span id="rgb-display">(255, 255, 255)</span></span>
+              </div>
+
+              <!-- Preview Button -->
+              <button
+                class="btn btn-primary"
+                id="preview-btn"
+                onclick="previewColor()"
+                disabled
+              >
+                👁️ Preview
+              </button>
+
+              <!-- Live Preview -->
+              <div id="color-preview" class="color-preview hidden">
+                <h4>Preview:</h4>
+                <img
+                  id="preview-image"
+                  src=""
+                  alt="Preview"
+                  class="preview-img"
+                />
+              </div>
+
+              <!-- Progress Bar -->
+              <div id="color-progress" class="progress-container hidden">
+                <div class="progress-bar">
+                  <div class="progress-fill"></div>
+                </div>
+                <p class="progress-text">Memproses... Harap tunggu</p>
+              </div>
+
+              <!-- Result -->
+              <div id="color-result" class="result-area hidden">
+                <h4>Hasil Final:</h4>
+                <div class="result-display">
+                  <div class="result-preview">
+                    <img id="color-result-img" src="" alt="Result" />
+                  </div>
+                </div>
+                <div class="result-actions">
+                  <button
+                    class="btn btn-success"
+                    id="download-color-btn"
+                    onclick="downloadColor()"
+                  >
+                    ⬇️ Download Gambar
+                  </button>
+                  <button class="btn btn-secondary" onclick="resetColor()">
+                    Proses Gambar Lain
+                  </button>
+                </div>
+              </div>
+
+              <!-- Error Message -->
+              <div id="color-error" class="alert alert-error hidden"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+      <div class="container">
+        <h2>✨ 20 Fitur Lengkap</h2>
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon">🗑️</div>
+            <h3>1. Remove Background</h3>
+            <p>Hapus background dengan AI terdepan</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🎨</div>
+            <h3>2. Set Background Color</h3>
+            <p>Ubah background dengan warna pilihan</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">↻</div>
+            <h3>3. Rotate Image</h3>
+            <p>Putar gambar 90° atau -90°</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">↔️</div>
+            <h3>4. Flip Horizontal</h3>
+            <p>Balik gambar ke kiri/kanan</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">↕️</div>
+            <h3>5. Flip Vertical</h3>
+            <p>Balik gambar ke atas/bawah</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">☀️</div>
+            <h3>6. Adjust Brightness</h3>
+            <p>Kontrol kecerahan gambar</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">📊</div>
+            <h3>7. Adjust Contrast</h3>
+            <p>Tingkatkan/turunkan kontras</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🌈</div>
+            <h3>8. Adjust Saturation</h3>
+            <p>Ubah intensitas warna</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">📏</div>
+            <h3>9. Resize Image</h3>
+            <p>Ubah ukuran gambar custom</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">💨</div>
+            <h3>10. Blur Background</h3>
+            <p>Aplikasikan efek blur</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🖤</div>
+            <h3>11. Grayscale</h3>
+            <p>Ubah ke hitam putih</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🔱</div>
+            <h3>12. Sharpen Image</h3>
+            <p>Perjelas detail gambar</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🔲</div>
+            <h3>13. Edge Detection</h3>
+            <p>Deteksi tepi/border</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">⚫</div>
+            <h3>14. Invert Colors</h3>
+            <p>Balikkan warna gambar</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🤖</div>
+            <h3>15. Multiple AI Models</h3>
+            <p>Pilih dari 4+ model AI</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🎯</div>
+            <h3>16. Color Picker</h3>
+            <p>Pilih warna dari palette</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">⚡</div>
+            <h3>17. Real-time Preview</h3>
+            <p>Lihat perubahan instantly</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🐉</div>
+            <h3>18. Drag & Drop Upload</h3>
+            <p>Upload gambar dengan mudah</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">⬇️</div>
+            <h3>19. Download Results</h3>
+            <p>Unduh gambar hasil edit</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">📱</div>
+            <h3>20. Responsive Design</h3>
+            <p>Bekerja di mobile, tablet, desktop</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Usage Guide -->
+    <section id="usage" class="usage-guide">
+      <div class="container">
+        <h2>📖 Panduan Penggunaan</h2>
+        <div class="guide-steps">
+          <div class="step">
+            <div class="step-number">1</div>
+            <h3>Upload Gambar</h3>
+            <p>
+              Pilih gambar dari perangkat Anda atau drag & drop ke area upload
+            </p>
+          </div>
+          <div class="step">
+            <div class="step-number">2</div>
+            <h3>Edit atau Proses</h3>
+            <p>
+              Gunakan Editor untuk edit langsung atau pilih proses khusus (hapus
+              BG/set warna)
+            </p>
+          </div>
+          <div class="step">
+            <div class="step-number">3</div>
+            <h3>Lihat Preview Real-time</h3>
+            <p>Setiap perubahan akan ditampilkan langsung di panel preview</p>
+          </div>
+          <div class="step">
+            <div class="step-number">4</div>
+            <h3>Download Hasil</h3>
+            <p>Klik tombol Download untuk menyimpan gambar hasil edit</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <p>&copy; 2025 Rembg-Fuse. Semua hak dilindungi.</p>
+        <p>Version 2.0 | AI-Powered Background Processing + Advanced Editor</p>
+      </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  </body>
+</html>

@@ -53,7 +53,7 @@ cd path/to/rembg-fuse-main
 Contoh Windows:
 
 ```bash
-cd C:\Users\Louis\SEM4_ArtificialIntelligence\Proyek UTS 1 - Copy\Rembg-Fuse-main
+cd C:\Users\Louis\SEM4_ArtificialIntelligence\ProyekAI\Rembg-Fuse-main
 ```
 
 ### Step 3: Install Dependencies (Library Python)
